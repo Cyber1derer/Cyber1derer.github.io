@@ -1,2 +1,125 @@
-Hi
-Some day i will create site, but is it different story
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cyber1derer</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #000;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+            color: #fff;
+        }
+        .container {
+            position: relative;
+            width: 90%;
+            max-width: 600px;
+            text-align: center;
+        }
+        .background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, #000, #1a1a1a);
+            z-index: -1;
+            overflow: hidden;
+        }
+        .star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: #fff;
+            border-radius: 50%;
+            animation: twinkle 2s infinite;
+        }
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+        .header {
+            font-size: 4em;
+            margin-bottom: 20px;
+            animation: float 6s infinite ease-in-out;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+        .name {
+            font-size: 2em;
+            margin-bottom: 10px;
+            animation: fadeIn 2s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .nickname {
+            font-size: 1.2em;
+            color: #aaa;
+            animation: fadeIn 2s ease-in-out 1s;
+        }
+        .content {
+            font-size: 1.2em;
+            line-height: 1.6;
+            margin-top: 20px;
+            animation: fadeIn 2s ease-in-out 2s;
+        }
+        .robot {
+            width: 150px;
+            height: 150px;
+            margin: 20px auto;
+            background: url('https://avatars.githubusercontent.com/u/38405016?v=4') no-repeat center center;
+            background-size: cover;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+            animation: spin 5s infinite linear;
+        }
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="background"></div>
+    <div class="container">
+        <div class="header">DV</div>
+        <div class="name">Денис </div>
+        <div class="nickname">@Cyber1iderer</div>
+        <div class="content">
+            Разработчик, Computer Vision, ML, Робототехник
+        </div>
+        <div class="robot"></div>
+    </div>
+    <script>
+        // Create stars dynamically
+        function createStars(num) {
+            const container = document.querySelector('.background');
+            for (let i = 0; i < num; i++) {
+                const star = document.createElement('div');
+                star.classList.add('star');
+                star.style.top = `${Math.random() * 100}vh`;
+                star.style.left = `${Math.random() * 100}vw`;
+                star.style.animationDuration = `${2 + Math.random() * 3}s`;
+                container.appendChild(star);
+            }
+        }
+        createStars(100);
+
+        // Simple script to add interactivity, e.g., logging a visit
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('Cyber1derer был тут!');
+        });
+    </script>
+</body>
+</html>
