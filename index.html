@@ -48,7 +48,8 @@
         .header {
             font-size: 4em;
             margin-bottom: 20px;
-            animation: float 6s infinite ease-in-out;
+            opacity: 0; /* Скрыть элемент до анимации */
+            animation: float 6s infinite ease-in-out, fadeIn 2s forwards;
         }
         @keyframes float {
             0%, 100% { transform: translateY(0); }
@@ -57,7 +58,8 @@
         .name {
             font-size: 2em;
             margin-bottom: 10px;
-            animation: fadeIn 2s ease-in-out;
+            opacity: 0; /* Скрыть элемент до анимации */
+            animation: fadeIn 2s ease-in-out forwards;
         }
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(20px); }
@@ -66,13 +68,15 @@
         .nickname {
             font-size: 1.2em;
             color: #aaa;
-            animation: fadeIn 2s ease-in-out 1s;
+            opacity: 0; /* Скрыть элемент до анимации */
+            animation: fadeIn 2s ease-in-out 1s forwards;
         }
         .content {
             font-size: 1.2em;
             line-height: 1.6;
             margin-top: 20px;
-            animation: fadeIn 2s ease-in-out 2s;
+            opacity: 0; /* Скрыть элемент до анимации */
+            animation: fadeIn 2s ease-in-out 2s forwards;
         }
         .robot {
             width: 150px;
@@ -94,7 +98,7 @@
     <div class="background"></div>
     <div class="container">
         <div class="header">DV</div>
-        <div class="name"> @Cyber1derer </div>
+        <div class="name">@Cyber1derer</div>
         <div class="nickname">Денис</div>
         <div class="content">
             Developer, Computer Vision, ML, Robotics engineer
@@ -102,7 +106,7 @@
         <div class="robot"></div>
     </div>
     <script>
-        // Create stars dynamically
+        // Создание звезд динамически
         function createStars(num) {
             const container = document.querySelector('.background');
             for (let i = 0; i < num; i++) {
@@ -116,7 +120,6 @@
         }
         createStars(100);
 
-        // Simple script to add interactivity, e.g., logging a visit
         document.addEventListener('DOMContentLoaded', () => {
             console.log('Cyber1derer был тут!');
         });
