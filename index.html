@@ -48,7 +48,7 @@
         .header {
             font-size: 4em;
             margin-bottom: 20px;
-            opacity: 0; /* Скрыть элемент до анимации */
+            opacity: 0; 
             animation: float 6s infinite ease-in-out, fadeIn 2s forwards;
         }
         @keyframes float {
@@ -68,15 +68,28 @@
         .nickname {
             font-size: 1.2em;
             color: #aaa;
-            opacity: 0; /* Скрыть элемент до анимации */
+            opacity: 0; 
             animation: fadeIn 2s ease-in-out 1s forwards;
         }
         .content {
             font-size: 1.2em;
             line-height: 1.6;
             margin-top: 20px;
-            opacity: 0; /* Скрыть элемент до анимации */
-            animation: fadeIn 2s ease-in-out 2s forwards;
+            min-height: 1.6em; 
+        }
+        /* Стили для мигающего курсора */
+        .content::after {
+            content: ''; /* '|' */
+            color: #fff;
+            animation: blink 1s step-end infinite;
+        }
+        @keyframes blink {
+            from, to {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0;
+            }
         }
         .robot {
             width: 150px;
@@ -100,9 +113,7 @@
         <div class="header">ΔV</div>
         <div class="name">@Cyber1derer</div>
         <div class="nickname">Denis</div>
-        <div class="content">
-            Developer, Computer Vision, ML, Robotics engineer
-        </div>
+        <div class="content" id="typewriter"></div>
         <div class="robot"></div>
     </div>
     <script>
@@ -121,7 +132,51 @@
         createStars(100);
 
         document.addEventListener('DOMContentLoaded', () => {
-            console.log('Cyber1derer был тут!');
+            console.log('Я все вижу! А исходный код лежит на гитхаб');
+            
+            // --- НАЧАЛО: Логика для эффекта пишущей машинки ---
+            const typewriterElement = document.getElementById('typewriter');
+            const words = ["Developer", "Computer Vision", "ML", "Robotics engineer"];
+            let wordIndex = 0;
+            let charIndex = 0;
+            let isDeleting = false;
+            
+            const typingSpeed = 50;
+            const deletingSpeed = 35;
+            const delayBetweenWords = 1500;
+
+            function type() {
+                const currentWord = words[wordIndex];
+                
+                // Определяем, печатаем мы или стираем
+                if (isDeleting) {
+                    // Стираем символ
+                    typewriterElement.textContent = currentWord.substring(0, charIndex - 1);
+                    charIndex--;
+                } else {
+                    // Печатаем символ
+                    typewriterElement.textContent = currentWord.substring(0, charIndex + 1);
+                    charIndex++;
+                }
+
+                let typeSpeed = isDeleting ? deletingSpeed : typingSpeed;
+
+                // Если слово напечатано полностью
+                if (!isDeleting && charIndex === currentWord.length) {
+                    typeSpeed = delayBetweenWords; // Пауза перед стиранием
+                    isDeleting = true;
+                } 
+                // Если слово стерто полностью
+                else if (isDeleting && charIndex === 0) {
+                    isDeleting = false;
+                    wordIndex = (wordIndex + 1) % words.length; // Переходим к следующему слову
+                }
+                
+                setTimeout(type, typeSpeed);
+            }
+            
+            setTimeout(type, 3000);
+            // --- КОНЕЦ: Логика для эффекта пишущей машинки ---
         });
     </script>
 </body>
