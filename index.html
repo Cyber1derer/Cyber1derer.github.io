@@ -105,13 +105,34 @@
             from { transform: rotate(0deg); }
             to { transform: rotate(360deg); }
         }
+        .github-icon, .huggingface-icon {
+            width: 20px;
+            height: 20px;
+            vertical-align: middle;
+            margin: 0 5px;
+            opacity: 1; /* Убираем полупрозрачность */
+        }
+        .huggingface-icon {
+            filter: brightness(0.5); /* Уменьшаем яркость Hugging Face */
+        }
+        .name a {
+            text-decoration: none;
+        }
     </style>
 </head>
 <body>
     <div class="background"></div>
     <div class="container">
         <div class="header">ΔV</div>
-        <div class="name">@Cyber1derer</div>
+        <div class="name">
+            <a href="https://huggingface.co/Cyber1derer" target="_blank">
+                <img src="img/huggingface_logo-noborder.svg" alt="Hugging Face" class="huggingface-icon">
+            </a>
+            @Cyber1derer
+            <a href="https://github.com/Cyber1derer" target="_blank">
+                <img src="img/github-mark.svg" alt="GitHub" class="github-icon">
+            </a>
+        </div>
         <div class="nickname">Denis</div>
         <div class="content" id="typewriter"></div>
         <div class="robot"></div>
