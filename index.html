@@ -41,6 +41,61 @@
             border-radius: 50%;
             animation: twinkle 2s infinite;
         }
+        .comet {
+            position: absolute;
+            left: -35vw;
+            top: 8vh;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            pointer-events: none;
+            opacity: 0;
+            background: radial-gradient(circle at 32% 32%, #fff, #8bd3ff 55%, rgba(139, 211, 255, 0.2) 80%);
+            box-shadow: 0 0 18px rgba(139, 211, 255, 0.9), -110px 0 24px rgba(139, 211, 255, 0.35);
+            transform: translateX(0) translateY(0) rotate(20deg);
+            z-index: 0;
+        }
+        .comet.active {
+            animation: cometFly 2.5s ease-out forwards;
+        }
+        .comet-tools {
+            position: absolute;
+            display: flex;
+            gap: 8px;
+            left: -160px;
+            top: -14px;
+        }
+        .comet-tool {
+            padding: 3px 7px;
+            border-radius: 999px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(14, 18, 25, 0.75);
+            color: #dff4ff;
+            font-size: 12px;
+            white-space: nowrap;
+            box-shadow: 0 0 12px rgba(139, 211, 255, 0.15);
+            animation: shimmer 1.1s ease-in-out infinite;
+        }
+        @keyframes shimmer {
+            0%, 100% { opacity: 0.7; }
+            50% { opacity: 1; }
+        }
+        @keyframes cometFly {
+            0% {
+                opacity: 0;
+                transform: translateX(0) translateY(0) rotate(17deg) scale(0.85);
+            }
+            10% {
+                opacity: 1;
+            }
+            85% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0;
+                transform: translateX(145vw) translateY(60vh) rotate(17deg) scale(1.1);
+            }
+        }
         @keyframes twinkle {
             0%, 100% { opacity: 0.5; }
             50% { opacity: 1; }
@@ -118,6 +173,17 @@
         .name a {
             text-decoration: none;
         }
+        @media (prefers-reduced-motion: reduce) {
+            .star,
+            .header,
+            .name,
+            .nickname,
+            .robot,
+            .comet,
+            .comet-tool {
+                animation: none !important;
+            }
+        }
     </style>
 </head>
 <body>
@@ -138,6 +204,8 @@
         <div class="robot"></div>
     </div>
     <script>
+        const TOOL_LABELS = ['🐍 Python', '🔥 PyTorch', '👁️ OpenCV', '🧠 NumPy', '📊 Pandas', '🤗 HF'];
+
         // Создание звезд динамически
         function createStars(num) {
             const container = document.querySelector('.background');
@@ -152,8 +220,77 @@
         }
         createStars(100);
 
+        function setupCometEvent() {
+            const background = document.querySelector('.background');
+            if (!background) return;
+
+            const comet = document.createElement('div');
+            comet.className = 'comet';
+
+            const toolsContainer = document.createElement('div');
+            toolsContainer.className = 'comet-tools';
+            comet.appendChild(toolsContainer);
+
+            background.appendChild(comet);
+
+            const minDelayMs = 9000;
+            const maxDelayMs = 22000;
+            const eventChance = 0.16;
+
+            function randomFromRange(min, max) {
+                return Math.random() * (max - min) + min;
+            }
+
+            function pickTools() {
+                const copy = [...TOOL_LABELS].sort(() => Math.random() - 0.5);
+                return copy.slice(0, 3);
+            }
+
+            function launchComet() {
+                if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                    scheduleNextCheck();
+                    return;
+                }
+
+                if (Math.random() > eventChance) {
+                    scheduleNextCheck();
+                    return;
+                }
+
+                const startY = randomFromRange(2, 28);
+                comet.style.top = `${startY}vh`;
+                comet.style.left = '-35vw';
+
+                toolsContainer.innerHTML = '';
+                pickTools().forEach((tool, index) => {
+                    const label = document.createElement('span');
+                    label.className = 'comet-tool';
+                    label.textContent = tool;
+                    label.style.animationDelay = `${index * 0.15}s`;
+                    toolsContainer.appendChild(label);
+                });
+
+                comet.classList.remove('active');
+                void comet.offsetWidth;
+                comet.classList.add('active');
+            }
+
+            function scheduleNextCheck() {
+                const next = randomFromRange(minDelayMs, maxDelayMs);
+                setTimeout(launchComet, next);
+            }
+
+            comet.addEventListener('animationend', () => {
+                comet.classList.remove('active');
+                scheduleNextCheck();
+            });
+
+            scheduleNextCheck();
+        }
+
         document.addEventListener('DOMContentLoaded', () => {
             console.log('Я все вижу! А исходный код лежит на гитхаб');
+            setupCometEvent();
             
             // --- НАЧАЛО: Логика для эффекта пишущей машинки ---
             const typewriterElement = document.getElementById('typewriter');
